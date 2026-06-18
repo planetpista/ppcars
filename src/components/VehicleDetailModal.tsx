@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, MapPin, Calendar, Fuel, Settings, User, Building, Phone, Mail } from 'lucide-react';
+import { X, MapPin, Settings, User, Building, Phone, Mail } from 'lucide-react';
 import { Vehicle } from '../types';
 import { getTranslation } from '../utils/translations';
 import { ContactModal } from './ContactModal';

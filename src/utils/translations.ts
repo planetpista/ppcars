@@ -1,13 +1,13 @@
-export const translations = {
+export const translations: Record<string, { fr: string; en: string }> = {
   // Navigation
   home: { fr: 'Accueil', en: 'Home' },
   favorites: { fr: 'Favoris', en: 'Favorites' },
   account: { fr: 'Compte', en: 'Account' },
   contact: { fr: 'Contact', en: 'Contact' },
-  
+
   // Hero
   heroTitle: { fr: 'Make Your Best Choice.', en: 'Make Your Best Choice.' },
-  
+
   // Search form
   rental: { fr: 'Location', en: 'Rental' },
   purchase: { fr: 'Achat', en: 'Purchase' },
@@ -23,27 +23,27 @@ export const translations = {
   newUsed: { fr: 'Neuf / Occasion', en: 'New / Used' },
   search: { fr: 'Rechercher', en: 'Search' },
   validate: { fr: 'Valider', en: 'Validate' },
-  
+
   // Categories
   moto: { fr: 'Moto', en: 'Motorcycle' },
   berline: { fr: 'Berline', en: 'Sedan' },
   suv: { fr: 'SUV', en: 'SUV' },
-  
+
   // Engines
   essence: { fr: 'Essence', en: 'Gasoline' },
   diesel: { fr: 'Diesel', en: 'Diesel' },
   hybride: { fr: 'Hybride', en: 'Hybrid' },
   electrique: { fr: 'Électrique', en: 'Electric' },
-  
+
   // Status
   neuf: { fr: 'Neuf', en: 'New' },
   occasion: { fr: 'Occasion', en: 'Used' },
   importé: { fr: 'Importé', en: 'Imported' },
-  
+
   // Announcements
   postAnnouncement: { fr: 'Déposer une annonce', en: 'Post Announcement' },
   loginRequired: { fr: 'Connexion requise', en: 'Login Required' },
-  
+
   // Auth
   login: { fr: 'Se connecter', en: 'Login' },
   register: { fr: 'S\'inscrire', en: 'Register' },
@@ -54,7 +54,7 @@ export const translations = {
   phone: { fr: 'Téléphone', en: 'Phone' },
   company: { fr: 'Entreprise', en: 'Company' },
   address: { fr: 'Adresse', en: 'Address' },
-  
+
   // Common
   close: { fr: 'Fermer', en: 'Close' },
   save: { fr: 'Enregistrer', en: 'Save' },

@@ -1,9 +1,20 @@
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, auth } from '../lib/supabase';
-import { Database } from '../types/database';
 
-type Profile = Database['public']['Tables']['profiles']['Row'];
+interface Profile {
+  id: string;
+  user_id: string;
+  type: 'particulier' | 'professionnel';
+  name: string;
+  phone: string | null;
+  company: string | null;
+  address: string | null;
+  profile_picture: string | null;
+  logo: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface AuthUser extends User {
   profile?: Profile;
@@ -33,16 +44,16 @@ export const useAuth = () => {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
         setSession(session);
-        
+
         if (session?.user) {
           const userWithProfile = await getUserWithProfile(session.user);
           setUser(userWithProfile);
         } else {
           setUser(null);
         }
-        
+
         setLoading(false);
       }
     );
@@ -52,20 +63,20 @@ export const useAuth = () => {
 
   const getUserWithProfile = async (user: User): Promise<AuthUser> => {
     try {
-      const { data: profile } = await supabase
+      const { data: profile } = await (supabase as any)
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
         .single();
 
-      return { 
-        ...user, 
+      return {
+        ...user,
         profile: profile || undefined,
         phone: profile?.phone || undefined
-      };
+      } as AuthUser;
     } catch (error) {
       console.error('Error fetching user profile:', error);
-      return user;
+      return user as AuthUser;
     }
   };
 
@@ -109,7 +120,7 @@ export const useAuth = () => {
     if (!user) return { error: new Error('No user logged in') };
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('profiles')
         .update(updates)
         .eq('user_id', user.id)
@@ -117,7 +128,7 @@ export const useAuth = () => {
         .single();
 
       if (!error && data) {
-        setUser({ ...user, profile: data, phone: data.phone || undefined });
+        setUser({ ...user, profile: data, phone: data.phone || undefined } as AuthUser);
       }
 
       return { data, error };

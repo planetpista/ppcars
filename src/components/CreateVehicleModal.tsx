@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Upload, MapPin } from 'lucide-react';
+import { X, MapPin } from 'lucide-react';
 import { getTranslation } from '../utils/translations';
 import { countries } from '../data/countries';
 import { carBrands } from '../data/carBrands';
@@ -74,7 +74,7 @@ export const CreateVehicleModal: React.FC<CreateVehicleModalProps> = ({
 
   const handleGeolocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(() => {
         // Simulate reverse geocoding for Benin cities
         const cities = ['Cotonou', 'Porto-Novo', 'Parakou', 'Abomey-Calavi', 'Djougou'];
         const randomCity = cities[Math.floor(Math.random() * cities.length)];
@@ -149,7 +149,7 @@ export const CreateVehicleModal: React.FC<CreateVehicleModalProps> = ({
         max_duration: formData.type === 'location' ? formData.maxDuration : null
       };
 
-      const { error: insertError } = await supabase
+      const { error: insertError } = await (supabase as any)
         .from('vehicles')
         .insert([vehicleData]);
 

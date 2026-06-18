@@ -41,12 +41,6 @@ export const Navigation: React.FC<NavigationProps> = ({
     onPageChange('home');
   };
 
-  const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      setIsMenuOpen(false);
-    }
-  };
-
   const menuItems = [
     { key: 'home', page: 'home' },
     ...(isAuthenticated ? [{ key: 'favorites', page: 'favorites' }] : []),

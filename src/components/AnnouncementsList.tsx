@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, MapPin, Calendar, Fuel, Settings } from 'lucide-react';
+import { Heart, MapPin, Fuel, Settings } from 'lucide-react';
 import { Vehicle, Currency } from '../types';
 import { getTranslation } from '../utils/translations';
 import { getCurrencySymbol, convertPrice } from '../data/currencies';
@@ -9,9 +9,7 @@ interface AnnouncementsListProps {
   currency: Currency;
   vehicles: Vehicle[];
   loading?: boolean;
-  onCreateAnnouncement: () => void;
   onVehicleClick: (vehicle: Vehicle) => void;
-  isLoggedIn: boolean;
 }
 
 export const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
@@ -19,9 +17,7 @@ export const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
   currency,
   vehicles,
   loading = false,
-  onCreateAnnouncement,
-  onVehicleClick,
-  isLoggedIn
+  onVehicleClick
 }) => {
   const formatPrice = (price: number, type: string) => {
     const convertedPrice = convertPrice(price, 'XOF', currency);

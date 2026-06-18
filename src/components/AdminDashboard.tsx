@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Users, Car, ShieldCheck, Trash2, Eye, BarChart2 } from 'lucide-react';
+import { Users, Car, ShieldCheck, Trash2, BarChart2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 

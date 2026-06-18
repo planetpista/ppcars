@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MapPin, Calendar } from 'lucide-react';
+import { Search, MapPin } from 'lucide-react';
 import { getTranslation } from '../utils/translations';
 import { SearchFilters } from '../types';
 import { countries } from '../data/countries';
@@ -42,7 +42,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ language, onSearch }) 
 
   const handleGeolocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(() => {
         // Simulate reverse geocoding
         const cities = ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Nice'];
         const randomCity = cities[Math.floor(Math.random() * cities.length)];

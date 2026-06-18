@@ -9,7 +9,6 @@ import { AccountPage } from './components/AccountPage';
 import { ContactPage } from './components/ContactPage';
 import { CreateVehicleModal } from './components/CreateVehicleModal';
 import { Vehicle, SearchFilters, Currency } from './types';
-import { getCurrencySymbol } from './data/currencies';
 import { useAuth } from './hooks/useAuth';
 import { useVehicles } from './hooks/useVehicles';
 
@@ -95,9 +94,7 @@ function App() {
               currency={currency}
               vehicles={filteredVehicles}
               loading={vehiclesLoading}
-              onCreateAnnouncement={handleCreateAnnouncement}
               onVehicleClick={handleVehicleClick}
-              isLoggedIn={!!user}
             />
           </div>
         );

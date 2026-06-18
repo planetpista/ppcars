@@ -84,7 +84,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         address: ''
       });
       setError(null);
-    } catch (err) {
+    } catch {
       setError('Une erreur est survenue');
     } finally {
       setIsSubmitting(false);

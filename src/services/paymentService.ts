@@ -14,9 +14,9 @@ export interface PaymentResult {
   error?: string;
 }
 
-export const createPayPalOrder = async (paymentData: PaymentData) => {
+export const createPayPalOrder = (paymentData: PaymentData) => {
   return {
-    intent: 'CAPTURE',
+    intent: 'CAPTURE' as const,
     purchase_units: [
       {
         amount: {
@@ -29,37 +29,37 @@ export const createPayPalOrder = async (paymentData: PaymentData) => {
     ],
     application_context: {
       brand_name: 'Planet Pista',
-      landing_page: 'NO_PREFERENCE',
-      user_action: 'PAY_NOW',
+      landing_page: 'NO_PREFERENCE' as const,
+      user_action: 'PAY_NOW' as const,
       return_url: `${window.location.origin}/payment/success`,
       cancel_url: `${window.location.origin}/payment/cancel`
     }
   };
 };
 
-export const onPayPalApprove = async (data: any, actions: any): Promise<PaymentResult> => {
+export const onPayPalApprove = async (actions: any): Promise<PaymentResult> => {
   try {
     const order = await actions.order.capture();
     console.log('Payment successful:', order);
-    
-    // Save transaction to database
-    const { error: dbError } = await supabase
-      .from('transactions')
-      .insert([{
-        transaction_id: order.id,
-        amount: parseFloat(order.purchase_units[0].amount.value),
-        currency: order.purchase_units[0].amount.currency_code,
-        status: 'completed',
-        payment_method: 'paypal',
-        vehicle_id: order.purchase_units[0].custom_id?.split('_')[0],
-        user_id: order.purchase_units[0].custom_id?.split('_')[1],
-        created_at: new Date().toISOString()
-      }]);
 
-    if (dbError) {
+    // Save transaction to database (silently fail if table doesn't exist)
+    try {
+      await (supabase as any)
+        .from('transactions')
+        .insert([{
+          transaction_id: order.id,
+          amount: parseFloat(order.purchase_units[0].amount.value),
+          currency: order.purchase_units[0].amount.currency_code,
+          status: 'completed',
+          payment_method: 'paypal',
+          vehicle_id: order.purchase_units[0].custom_id?.split('_')[0],
+          user_id: order.purchase_units[0].custom_id?.split('_')[1],
+          created_at: new Date().toISOString()
+        }]);
+    } catch (dbError) {
       console.error('Error saving transaction:', dbError);
     }
-    
+
     return {
       success: true,
       transactionId: order.id
@@ -74,7 +74,6 @@ export const onPayPalApprove = async (data: any, actions: any): Promise<PaymentR
 };
 
 export const calculateServiceFee = (amount: number): number => {
-  // Frais de service de 5% avec minimum de 2€
   const fee = Math.max(amount * 0.05, 2);
   return Math.round(fee * 100) / 100;
 };

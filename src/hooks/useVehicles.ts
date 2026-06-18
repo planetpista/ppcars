@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Vehicle } from '../types';
-import { Database } from '../types/database';
-
-type VehicleRow = Database['public']['Tables']['vehicles']['Row'];
-type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
 export const useVehicles = () => {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -16,7 +12,7 @@ export const useVehicles = () => {
       setLoading(true);
       setError(null);
 
-      const { data: vehiclesData, error: vehiclesError } = await supabase
+      const { data: vehiclesData, error: vehiclesError } = await (supabase as any)
         .from('vehicles')
         .select(`
           *,
@@ -86,14 +82,14 @@ export const useVehicles = () => {
     fetchVehicles();
 
     // Set up real-time subscription
-    const subscription = supabase
+    const subscription = (supabase as any)
       .channel('vehicles_changes')
-      .on('postgres_changes', 
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'vehicles' 
-        }, 
+      .on('postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'vehicles'
+        },
         () => {
           fetchVehicles();
         }

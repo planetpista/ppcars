@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, CreditCard, Shield, Info } from 'lucide-react';
+import { X, Shield, Info } from 'lucide-react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { Vehicle } from '../types';
 import { createPayPalOrder, onPayPalApprove, calculateServiceFee, calculateTotalAmount } from '../services/paymentService';
@@ -25,23 +25,23 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
   if (!isOpen || !vehicle) return null;
 
-  const baseAmount = vehicle.type === 'location' 
-    ? (vehicle.dailyRate || vehicle.price) * rentalDays 
+  const baseAmount = vehicle.type === 'location'
+    ? (vehicle.dailyRate || vehicle.price) * rentalDays
     : vehicle.price;
-  
+
   const serviceFee = calculateServiceFee(baseAmount);
   const totalAmount = calculateTotalAmount(baseAmount);
 
   const paypalOptions = {
-    "client-id": process.env.VITE_PAYPAL_CLIENT_ID || "test",
+    clientId: process.env.VITE_PAYPAL_CLIENT_ID || "test",
     currency: "EUR",
-    intent: "capture"
+    intent: "capture" as const
   };
 
-  const handleApprove = async (data: any, actions: any) => {
+  const handleApprove = async (_data: any, actions: any) => {
     setIsProcessing(true);
     try {
-      const result = await onPayPalApprove(data, actions);
+      const result = await onPayPalApprove(actions);
       if (result.success && result.transactionId) {
         onPaymentSuccess(result.transactionId);
         onClose();
@@ -123,7 +123,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             <PayPalScriptProvider options={paypalOptions}>
               <PayPalButtons
                 disabled={isProcessing}
-                createOrder={(data, actions) => {
+                createOrder={(_data, actions) => {
                   return actions.order.create(createPayPalOrder({
                     amount: totalAmount,
                     currency: 'EUR',
@@ -140,8 +140,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 style={{
                   layout: 'vertical',
                   color: 'blue',
-                  shape: 'rect',
-                  label: 'pay'
+                  shape: 'rect' as const,
+                  label: 'pay' as const
                 }}
               />
             </PayPalScriptProvider>
